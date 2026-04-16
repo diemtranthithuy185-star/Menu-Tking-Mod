@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+<meta charset="UTF-8">
+
+<title>Menu Tking Mod</title>
+
+<style>
+
+body{
+margin:0;
+font-family:Arial;
+background:transparent;
+}
+
+
+/* NÚT TK */
+
+#openBtn{
+
+position:fixed;
+
+top:120px;
+left:20px;
+
+width:44px;
+height:44px;
+
+border-radius:50%;
+
+background:black;
+
+color:#00ffff;
+
+font-weight:bold;
+
+font-size:14px;
+
+border:1.5px solid #00ffff;
+
+box-shadow:
+0 0 6px #00ffff,
+0 0 14px #00ffff;
+
+z-index:9999;
+
+cursor:pointer;
+
+transition:.2s;
+
+}
+
+#openBtn:hover{
+
+transform:scale(1.1);
+
+}
+
+
+/* PANEL */
+
+#panel{
+
+position:fixed;
+
+top:120px;
+left:95px;
+
+width:230px;
+
+max-height:420px;
+
+overflow-y:auto;
+
+background:black;
+
+border-radius:12px;
+
+border:2px solid #00ffff;
+
+box-shadow:0 0 16px #00ffff;
+
+transform:translateY(-20px);
+
+opacity:0;
+
+transition:.35s ease;
+
+pointer-events:none;
+
+}
+
+
+#panel.active{
+
+transform:translateY(0);
+
+opacity:1;
+
+pointer-events:auto;
+
+}
+
+
+/* HEADER */
+
+.header{
+
+padding:8px;
+
+text-align:center;
+
+font-size:15px;
+
+color:#00ffff;
+
+border-bottom:1px solid #00ffff;
+
+cursor:move;
+
+}
+
+
+/* ITEM */
+
+.item{
+
+padding:8px;
+
+font-size:13px;
+
+border-bottom:1px solid #00ffff33;
+
+color:white;
+
+}
+
+
+/* SWITCH */
+
+.switch{
+
+float:right;
+
+}
+
+
+/* TARGET BUTTON */
+
+.targetBox{
+
+display:flex;
+
+gap:4px;
+
+margin-top:5px;
+
+}
+
+.targetBox button{
+
+flex:1;
+
+padding:5px;
+
+font-size:12px;
+
+background:#111;
+
+border:1px solid #00ffff;
+
+color:white;
+
+border-radius:6px;
+
+transition:.2s;
+
+}
+
+.active{
+
+background:#00ffff;
+
+color:black;
+
+}
+
+
+/* SLIDER */
+
+.slider{
+
+width:100%;
+
+height:5px;
+
+background:#111;
+
+border-radius:6px;
+
+outline:none;
+
+margin-top:6px;
+
+appearance:none;
+
+}
+
+.slider::-webkit-slider-thumb{
+
+appearance:none;
+
+width:14px;
+
+height:14px;
+
+border-radius:50%;
+
+background:#00ffff;
+
+box-shadow:
+
+0 0 8px #00ffff,
+
+0 0 14px #00ffff;
+
+cursor:pointer;
+
+}
+
+
+/* GRID ESP */
+
+.grid{
+
+display:grid;
+
+grid-template-columns:1fr 1fr;
+
+gap:6px;
+
+margin-top:6px;
+
+}
+
+
+.row{
+
+display:flex;
+
+justify-content:space-between;
+
+align-items:center;
+
+}
+
+
+.section{
+
+color:#00ffff;
+
+font-size:13px;
+
+margin-bottom:4px;
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+
+<button id="openBtn">TK</button>
+
+
+<div id="panel">
+
+
+<div class="header" id="dragHeader">
+
+Menu Tking Mod
+
+</div>
+
+
+<div class="item">
+
+Bật Menu
+
+<input type="checkbox" class="switch">
+
+</div>
+
+
+<div class="item">
+
+Aim Target
+
+<div class="targetBox">
+
+<button onclick="setAim(this)">Neck</button>
+
+<button onclick="setAim(this)" class="active">Head</button>
+
+<button onclick="setAim(this)">Body</button>
+
+</div>
+
+</div>
+
+
+<div class="item">
+
+Aim FOV: <span id="fovValue">180</span>°
+
+<input
+
+type="range"
+
+class="slider"
+
+min="0"
+
+max="360"
+
+value="180"
+
+oninput="updateFov(this)"
+
+>
+
+</div>
+
+
+<div class="item">
+
+Aim Speed: <span id="speedValue">5</span>
+
+<input
+
+type="range"
+
+class="slider"
+
+min="0"
+
+max="10"
+
+value="5"
+
+oninput="updateSpeed(this)"
+
+>
+
+</div>
+
+
+<div class="item">
+
+Aim Smooth: <span id="smoothValue">50</span>
+
+<input
+
+type="range"
+
+class="slider"
+
+min="0"
+
+max="100"
+
+value="50"
+
+oninput="updateSmooth(this)"
+
+>
+
+</div>
+
+
+<div class="item">
+
+<div class="section">Định vị Full</div>
+
+<div class="grid">
+
+<div class="row">Định vị người <input type="checkbox"></div>
+
+<div class="row">Định vị bụng <input type="checkbox"></div>
+
+<div class="row">Định vị đầu <input type="checkbox"></div>
+
+<div class="row">Định vị cổ <input type="checkbox"></div>
+
+<div class="row">Định vị chân <input type="checkbox"></div>
+
+<div class="row">Định vị tay <input type="checkbox"></div>
+
+</div>
+
+</div>
+
+
+<div class="item">
+
+<div class="section">ESP</div>
+
+<div class="grid">
+
+<div class="row">ESP Box <input type="checkbox"></div>
+
+<div class="row">ESP Line <input type="checkbox"></div>
+
+<div class="row">ESP Skeleton <input type="checkbox"></div>
+
+</div>
+
+</div>
+
+
+<div class="item">
+
+AntiBand
+
+<input type="checkbox" class="switch">
+
+</div>
+
+
+</div>
+
+
+<script>
+
+
+let btn=document.getElementById("openBtn");
+
+let panel=document.getElementById("panel");
+
+
+btn.onclick=()=>{
+
+panel.classList.toggle("active");
+
+};
+
+
+function setAim(x){
+
+document.querySelectorAll(".targetBox button")
+
+.forEach(b=>b.classList.remove("active"));
+
+x.classList.add("active");
+
+}
+
+
+function updateFov(x){
+
+document.getElementById("fovValue").innerText=x.value;
+
+}
+
+
+function updateSpeed(x){
+
+document.getElementById("speedValue").innerText=x.value;
+
+}
+
+
+function updateSmooth(x){
+
+document.getElementById("smoothValue").innerText=x.value;
+
+}
+
+
+let drag=false;
+
+let offsetX;
+
+let offsetY;
+
+let header=document.getElementById("dragHeader");
+
+
+header.onmousedown=e=>{
+
+drag=true;
+
+offsetX=e.clientX-panel.offsetLeft;
+
+offsetY=e.clientY-panel.offsetTop;
+
+};
+
+
+document.onmousemove=e=>{
+
+if(drag){
+
+panel.style.left=e.clientX-offsetX+"px";
+
+panel.style.top=e.clientY-offsetY+"px";
+
+}
+
+};
+
+
+document.onmouseup=()=>{
+
+drag=false;
+
+};
+
+
+</script>
+
+</body>
+
+</html>
